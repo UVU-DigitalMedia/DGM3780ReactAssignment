@@ -1,0 +1,45 @@
+{
+  "name": "reactassign",
+  "version": "0.5.0",
+  "description": "React Assigment to DGM 3780",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "html": "html-minifier --collapse-whitespace ./src/index.html -o ./dist/index.html",
+    "css": "stylus --include ./node_modules --include-css --compress ./src/css/main.styl -o ./dist/css/style.css",
+    "js": "browserify -t reactify ./src/js/main.js | uglifyjs > ./dist/js/bundle.js",
+    "fonts": "fontify",
+    "build": "npm run html & npm run css & npm run js & npm run fonts",
+    "watch-html": "nodemon --ext html --watch ./src/ --exec 'npm run html'",
+    "watch-css": "nodemon --ext styl --watch ./src/css --exec 'npm run css'",
+    "watch-js": "nodemon --ext js --watch ./src/js --exec 'npm run js'",
+    "watch": "npm run watch-html & npm run watch-css & npm run watch-js",
+    "start": "npm run watch & live-server --port=3000 ./dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/landonconover/TheGameOfThings.git"
+  },
+  "author": "Landon Conover <landon.conover@gmail.com> (https://github.com/landonconover)",
+  "license": "MIT",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "devDependencies": {
+    "browserify": "^13.0.0",
+    "fontify": "0.0.2",
+    "html-minifier": "^1.1.1",
+    "live-server": "^0.9.1",
+    "reactify": "^1.1.1",
+    "stylus": "^0.53.0",
+    "uglify-js": "^2.6.1"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "holderjs": "^2.9.1",
+    "jquery": "^2.2.0",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7"
+  }
+}
