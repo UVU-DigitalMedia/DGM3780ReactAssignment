@@ -36,12 +36,32 @@ Here is the assigned tasks:
 
 #Tips
 - As always, ````npm install````
-- This assignment has no tests
+- This assignment has no tests (although, it should.)
 - This repo used the NPM Run scripts repo as a starting point.
     - This means that there is an automatic build process being used.
     - Check out the package.json file to see all the npm run commands.
-- ````npm start```` will spin up a static webserver with auto reload. Whenever you save a file, it will compile a build and auto reload the broweser.
+- ````npm start```` will spin up a static webserver with auto reload. If you have chrome instaled it will open a browser window for you as well. Whenever you save a file, it will compile a build and auto reload the broweser.
 - [Browserify](http://browserify.org/) is being used. This allows you to write node.js style code in the browser. This is already set up for you. See src/js/main.js
+- [Stylus](http://stylus-lang.com/) is used for the css. You shouldn't need to do anything with the css, unless you want to make things look more awesome. This is already built into the run scritps.
 
-##More to come
-If you are reading this on Monday Night. I will add more to this readme on tuesday. :smile:
+
+#Approach
+
+Start with the React.js [docs](https://facebook.github.io/react/docs/getting-started.html). There are a number of tricky things with React. But don't worry it isn't too bad.
+
+The first thing I would do is work though the getting started page linked above. This will get you comphy with the [JSX](https://facebook.github.io/react/docs/jsx-in-depth.html) syntax. JSX is a Javascript syntax extension. It is **NOT** required to use React. However, JSX makes React MUCH simpler once you can wrap your head around writing HTML inside javascript. JSX gets compiled to regular Javascript. Like so:
+
+```JSX
+var Nav;
+// Input (JSX):
+var app = <Nav color="blue" />;
+// Output (JS):
+var app = React.createElement(Nav, {color:"blue"});
+```
+
+Next, I would work though the [Tutorial](https://facebook.github.io/react/docs/tutorial.html). This will start to give you a better idea how to use React. You will learn how to make a simple comment form, much like facebook comments.
+
+Lastly I would work though the [Thinking in React](https://facebook.github.io/react/docs/thinking-in-react.html) tutorial. This will guide you though the steps nessassary to think in the react way. Full disclosure: this is what I referenced it quite often while writing this assinment. Once you have done this, here is a [picure that will help.](http://imgur.com/uCCe6J9). :smirk:
+
+
+
