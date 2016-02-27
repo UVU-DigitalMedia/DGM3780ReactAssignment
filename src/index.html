@@ -1,7 +1,7 @@
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,74 +14,162 @@
 
     <!-- core CSS -->
     <link href="/css/style.css" rel="stylesheet">
+    
+</head>
 
-
-
-  </head>
-
-  <body role="document">
+<body role="document">
 
     <!-- Fixed navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">React Assignment</a>
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">React Assignment</a>
+            </div>
         </div>
-      </div>
     </nav>
-
-
 
     <div class="container" id="content" role="main">
 
-      <div class="categoryList">
+        <!--
+        <div class="categoryList">
 
-        <label for="item-INPUT">TODO Item:</label>
-        <input type="text" id="item-INPUT">
+            <label for="item-INPUT">TODO Item:</label>
+            <input type="text" id="item-INPUT">
 
-        <label for="categorySelect">Category:</label>
-        <select name="categorySelect" id="categorySelect">
-          <option value="urgent">Regular</option>
-          <option value="urgent">Urgent</option>
-          <option value="urgent">Long Term</option>
-        </select>
+            <label for="categorySelect">Category:</label>
+            <select name="categorySelect" id="categorySelect">
+                <option value="urgent">Regular</option>
+                <option value="urgent">Urgent</option>
+                <option value="urgent">Long Term</option>
+            </select>
 
-        <button type="button" id="item-SUBMIT" class="btn btn-sm btn-default">Submit</button>
+            <button type="button" id="item-SUBMIT" class="btn btn-sm btn-default">Submit</button>
 
-        <ul>
-          <li>
-            <input type="checkbox">
-            <span class="long-term-ITM">Item 1</span>
-          </li>
-          <li>
-            <input type="checkbox">
-            <span class="regular-ITM">Item 1</span>
-          </li>
-          <li>
-            <input type="checkbox">
-            <span class="urgent-ITM">Item 1</span>
-          </li>
-        </ul>
+            <ul>
+                <li>
+                    <input type="checkbox">
+                    <span class="long-term-ITM">Item 1</span>
+                </li>
+                <li>
+                    <input type="checkbox">
+                    <span class="regular-ITM">Item 1</span>
+                </li>
+                <li>
+                    <input type="checkbox">
+                    <span class="urgent-ITM">Item 1</span>
+                </li>
+            </ul>
 
-      </div> <!-- /.categoryList -->
+        </div>
+        <!-- /.categoryList -->
 
-
-
-
-
-    </div> <!-- /container -->
-
+    </div>
+    <!-- /container -->
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/bundle.js"></script>
-  </body>
-</html>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+</body>
 
+<script type="text/babel">
+
+var list = [{ key: 0, task:'Finish Time Machine', category: 'regular' }, { key: 1, task: 'Realign Spectral Anamoly Cannon', category: 'regular' }, { key: 2, task: 'Explain Dark Matter to Steven Hawking', category: 'urgent' }, { key: 3, task: 'Do the dishes', category: 'long-term' }];
+    
+var TodoList = React.createClass({
+
+  getInitialState: function () {
+  
+    return { changed: false };
+  
+  },
+
+  render: function() {
+    return (
+    <div className="categoryList">
+        <TodoInput list={this.props.list}/>
+        <TodoItems list={this.props.list}/>
+    </div>
+    );
+  }
+});    
+    
+var TodoInput = React.createClass({
+
+  handleClick: function(e) {
+    
+        e.preventDefault();
+        
+        list.push({key: list.length, task: $('#item-INPUT').val(), category: $('#categorySelect').val() });
+        
+        console.log(list);
+        
+        ReactDOM.render(
+            <TodoList list={list}/>,
+            document.getElementById('content')
+        );
+        
+  },
+    
+  render: function() {
+    return (
+        
+        <div className="newToDoForm">
+            <label for="item-INPUT">TODO Item:</label>
+            <input type="text" id="item-INPUT" />
+            
+            <label for="categorySelect">Category:</label>
+            <select name="categorySelect" id="categorySelect">
+                <option value="regular">Regular</option>
+                <option value="urgent">Urgent</option>
+                <option value="long-term">Long Term</option>
+            </select>
+            
+            <button onClick={this.handleClick} type="button" id="item-SUBMIT" class="btn btn-sm btn-default">Submit</button>
+        </div>       
+    );
+  }
+});    
+
+var TodoItems = React.createClass({
+  render: function() {
+  
+  var items = this.props.list.map(function(item) {
+      return (
+        <TodoItem thingToDo={item.task} category={item.category} key={item.key} />
+      );
+    });
+    return (
+        <ul>
+            {items}
+        </ul>
+    );
+  }
+});  
+    
+var TodoItem = React.createClass({
+  render: function() {
+    return (
+        <li className={this.props.category + '-ITM'}>{this.props.thingToDo} <strong><em>{this.props.category}</em></strong></li>
+    );
+  }
+});     
+    
+ReactDOM.render(
+  <TodoList list={list}/>,
+  document.getElementById('content')
+);
+    
+</script>
+
+</html>
