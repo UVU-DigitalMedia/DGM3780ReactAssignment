@@ -87,7 +87,7 @@ var TodoItems = React.createClass({
 var TodoItem = React.createClass({
   render: function() {
     return (
-        <li className={this.props.category + '-ITM'}>{this.props.thingToDo} <strong><em>{this.props.category}</em></strong></li>
+        <li className={this.props.category + '-ITM'}><input type="checkbox" /> {this.props.thingToDo} <strong><em>{this.props.category}</em></strong></li>
     );
   }
 });     
