@@ -11,19 +11,30 @@ var ReactDOM = require('react-dom');
 ///      Edit below. All JS you need is included above.     ///
 ///////////////////////////////////////////////////////////////
 
+var taskList = [];
+
 var ToDoList = React.createClass({
   render: function() {
     return (
       <div>
-        Hello, world! I am a CommentBox.
-        <TodoItems data={this.props.data} />
         <ToDoInput />
+        <TodoItems taskList={this.props.taskList} />
       </div>
     );
   }
 });
 
 var ToDoInput = React.createClass({
+  add: function(){
+    //adding input to data array
+    taskList.push({key: taskList.length, name: $('#item-INPUT').val(), category: $('#categorySelect').val() });
+    console.log(taskList);
+    //update data
+    ReactDOM.render(
+      <ToDoList taskList={taskList} />,
+      document.getElementById('content')
+    );
+  },
   render: function(){
     return(
       <div>
@@ -32,69 +43,44 @@ var ToDoInput = React.createClass({
 
         <label for="categorySelect">Category:</label>
         <select name="categorySelect" id="categorySelect">
-          <option value="urgent">test</option>
+          <option value="regular">Regular</option>
           <option value="urgent">Urgent</option>
-          <option value="urgent">Long Term</option>
+          <option value="long-term">Long Term</option>
         </select>
 
-        <button type="button" id="item-SUBMIT" class="btn btn-sm btn-default">Submit</button>
+        <button type="button" id="item-SUBMIT" class="btn btn-sm btn-default" onClick={this.add}>Submit</button>
       </div>
     );
   }
 });
 
-var TodoItem = React.createClass({
+var Task = React.createClass({
   render: function() {
     return (
-      <div>
-        <p>{this.props.author}</p>
-        <p>{this.props.text}</p>
-      </div>
+      <li class="long-term-ITM">
+        <span class="long-term-ITM"><input type="checkbox" checked={this.props.complete}/></span>
+        <span class="long-term-ITM">{this.props.name}</span>
+      </li>
     );
   }
 });
 
 var TodoItems = React.createClass({
   render: function() {
-    var commentNodes = this.props.data.map(function(comment) {
+    var items = this.props.taskList.map(function(task) {
       return (
-        <TodoItem author={comment.author} text={comment.text} />
+        <Task key={task.key} name={task.name} category={task.category} complete={task.complete}/>
       );
     });
     return (
-      <div className="commentList">
-        {commentNodes}
-      </div>
+      <ul className="commentList">
+        {items}
+      </ul>
     );
   }
 });
-
-var data = [
-  {id: 1, author: "Pete Hunt", text: "This is one comment"},
-  {id: 2, author: "Jordan Walke", text: "This is *another* comment"}
-];
-
-//        <ToDoItems />
-/*
-var ToDoItems = React.createClass({
-  render: function(){
-    var bullets = [];
-    this.props.items.forEach(function(item){
-      bullets.push(<TodoItem item={item.name} />);
-    });
-    return(
-      <div>
-       <ul>
-       test
-//        {bullets}
-       </ul>
-      </div>
-    );
-  }
-});
-*/
 
 ReactDOM.render(
-  <ToDoList data={data} />,
+  <ToDoList taskList={taskList} />,
   document.getElementById('content')
 );
