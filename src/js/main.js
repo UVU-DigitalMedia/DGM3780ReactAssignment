@@ -29,24 +29,54 @@ var items = [
 
 // tutorial1.js
 var ToDoList = React.createClass({
+
+  getInitialState: function() {
+    return {
+      items: this.props.items
+    };
+  },
+
+  handleUserInput: function(newItemName){
+
+    var newId = this.state.items.length + 1;
+    var newName = newItemName;
+    var newObject = {id: newId, name: newName, complete: false}
+    this.state.items.push(newObject);
+
+    console.log()
+
+    this.setState({
+      items: this.state.items
+    })
+    // console.log(this.state.items);
+  },
+
   render: function() {
     return (
       <div className="commentBox">
         Hello, world! I am a CommentBox.
-        <ToDoInput />
-        <ToDoItems items={this.props.items}/>
+        <ToDoInput onUserInput={this.handleUserInput} />
+        <ToDoItems items={this.state.items} />
         
       </div>
     );
   }
 });
 
+  
+
 var ToDoInput = React.createClass({
+  handleChange: function() {
+    this.props.onUserInput(
+      this.refs.newItemInput.value
+    );
+  },
+
   render: function() {
     return (
       <div>
        <label htmlFor="item-INPUT">TODO Item:</label>
-        <input type="text" id="item-INPUT" />
+        <input ref="newItemInput" type="text" id="item-INPUT" />
 
         <label htmlFor="categorySelect">Category:</label>
         <select name="categorySelect" id="categorySelect">
@@ -55,7 +85,8 @@ var ToDoInput = React.createClass({
           <option value="urgent">Long Term</option>
         </select>
 
-        <button type="button" id="item-SUBMIT" className="btn btn-sm btn-default">Submit</button>
+        <button onClick={this.handleChange} type="button" id="item-SUBMIT" className="btn btn-sm btn-default">Submit</button>
+      
       </div>
     )
   }
@@ -63,6 +94,7 @@ var ToDoInput = React.createClass({
  
 var ToDoItems = React.createClass({
     render: function() {
+        console.log(this.props.items)
         var bullets = [];
         this.props.items.forEach(function(item) {
             bullets.push(<ToDoItem itemName={item.name} key={item.id} />)
