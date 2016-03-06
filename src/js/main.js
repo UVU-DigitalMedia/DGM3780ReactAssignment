@@ -16,12 +16,12 @@ var TodoList = React.createClass({
     
   getInitialState: function() {
       
-      return {list : this.props.list}
+      return {list: this.props.list}
   },
     
-  handleClick: function() {
+  addItem: function(item,category) {
         
-    this.state.list.push({key: list.length, task: document.getElementById('item-INPUT').value, category: document.getElementById('categorySelect').value });
+    this.state.list.push({key: list.length, task: item, category: category });
     this.setState(this.state);
       
   },
@@ -30,7 +30,7 @@ var TodoList = React.createClass({
    
     return (
         <div className="categoryList">
-            <TodoInput click={this.handleClick}/>
+            <TodoInput addItem={this.addItem}/>
             <TodoItems list={this.state.list}/>
         </div>
     );
@@ -38,21 +38,36 @@ var TodoList = React.createClass({
 });
 
 var TodoInput = React.createClass({
-        
+    
+  getInitialState: function() {
+      
+      return {value: 0};
+  },
+
+  click: function() {
+      
+      console.log(this);
+      console.log(this.refs.categorySelect);
+      console.log(this.refs.itemInput);
+      
+      this.props.addItem(this.refs.categorySelect.value, this.refs.itemInput.value);  
+  },
+    
   render: function() {
+      
     return (
         <div className="newToDoForm">
-            <label for="item-INPUT">TODO Item:</label>
-            <input type="text" id="item-INPUT" />
+            <label for="itemInput">TODO Item:</label>
+            <input type="text" id="itemInput" ref="itemInput" />
             
             <label for="categorySelect">Category:</label>
-            <select name="categorySelect" id="categorySelect">
+            <select name="categorySelect" id="categorySelect" ref="categorySelect">
                 <option value="regular">Regular</option>
                 <option value="urgent">Urgent</option>
                 <option value="long-term">Long Term</option>
             </select>
             
-            <button onClick={this.props.click} type="button" id="item-SUBMIT" class="btn btn-sm btn-default">Submit</button>
+            <button onClick={this.click} type="button" id="item-SUBMIT" class="btn btn-sm btn-default">Submit</button>
         </div>       
     );
   }
@@ -85,7 +100,9 @@ var TodoItem = React.createClass({
   }
 });     
     
-ReactDOM.render(
+var component = ReactDOM.render(
   <TodoList list={list}/>,
   document.getElementById('content')
 );
+
+console.log(component);
