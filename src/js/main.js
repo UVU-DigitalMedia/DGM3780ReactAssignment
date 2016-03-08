@@ -2,89 +2,73 @@ var $ = require('jquery');
 var holder = require('holderjs');
 global.jQuery = global.$ = $;
 
-var bootstrap = require('bootstrap');
-
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-///////////////////////////////////////////////////////////////
-///      Edit below. All JS you need is included above.     ///
-///////////////////////////////////////////////////////////////
-
-var items = [
-    {id: 1,
-    name: 'Item One',
-    complete: false},
-    {id: 2,
-    name: 'Item Two',
-    complete: false},
-    {id: 3,
-    name: 'Item Three',
-    complete: false},
-    {id: 4,
-    name: 'Item Four',
-    complete: false}
-];
+var list = [];
 
 var ToDoList = React.createClass({
+
   render: function() {
     return (
-      <div>
-        Hello, world! I am a CommentBox.
-        <ToDoInput />
-        <ToDoItems items={this.props.items}/>
-      </div>
+    <div className="categoryList">
+        <ToDoInput list={this.props.list}/>
+        <ToDoItems list={this.props.list}/>
+    </div>
     );
   }
 });
 
 var ToDoInput = React.createClass({
+  addItem: function() {
+        list.push({key: list.length, task: $('#item-INPUT').val(), category: $('#categorySelect').val() });
+        ReactDOM.render(
+            <ToDoList list={list}/>,
+            document.getElementById('content')
+        );
+  },
+
   render: function() {
     return (
-      <div>
-      <label for="item-INPUT">TODO Item:</label>
-        <input type="text" id="item-INPUT" />
-
-        <label for="categorySelect">Category:</label>
-
-        <select name="categorySelect" id="categorySelect">
-          <option value="urgent">Regular</option>
-          <option value="urgent">Urgent</option>
-          <option value="urgent">Long Term</option>
-        </select>
-
-        <button type="button" id="item-SUBMIT" class="btn btn-sm btn-default">Submit</button>
-
-      </div>
+        <div className="newToDoForm">
+            <label for="item-INPUT">TODO Item:</label>
+            <input type="text" id="item-INPUT" />
+            <label for="categorySelect">Category:</label>
+            <select name="categorySelect" id="categorySelect">
+                <option value="regular">Regular</option>
+                <option value="urgent">Urgent</option>
+                <option value="long-term">Long Term</option>
+            </select>
+            <button onClick={this.addItem} type="button" id="item-SUBMIT">Submit</button>
+        </div>
     );
   }
 });
 
 var ToDoItems = React.createClass({
-    render: function() {
-      var bullets = [];
-      this.props.items.forEach(function(item) {
-          bullets.push(<ToDoItem item={item.name} />);
-      });
-     return (
-         <ul>
-          {bullets}
-          </ul>
-        );
-    }
+  render: function() {
+    var items = this.props.list.map(function(item) {
+      return (
+        <ToDoItem task={item.task} category={item.category} key={item.key} />
+      );
+    });
+    return (
+        <ul>
+            {items}
+        </ul>
+    );
+  }
 });
 
 var ToDoItem = React.createClass({
-    render: function() {
-       return (
-          <li>
-            <span class="long-term-ITM">{this.props.item}</span>
-          </li>
-       );
-    }
+  render: function() {
+    return (
+        <li className={this.props.category + '-ITM'}>{this.props.task}</li>
+    );
+  }
 });
 
 ReactDOM.render(
-  <ToDoList items={items}/>,
+  <ToDoList list={list}/>,
   document.getElementById('content')
 );
