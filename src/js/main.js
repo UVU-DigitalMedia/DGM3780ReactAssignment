@@ -19,13 +19,36 @@ var items = [
 ];
 
 var TodoList = React.createClass({
+    
+    getInitialState: function() {
+        return{
+            items: this.props. items
+        }
+},
+
+    addTodo: function(newItemObj) {
+        
+        this.state.items.push(newItemObj);
+        var newItemsArray = this.state.items;
+        
+        var newId = this.state.items.length + 1;
+        
+        newItemObj.id = newId;
+        
+        console.log(newItemObj)
+        
+        this.setState({
+            items: newItemsArray
+        });
+    },
+    
     render: function (){
         return (
             <div className="categoryList">
 
-               <TodoInput />
+               <TodoInput onUserSubmit={this.addTodo} />
          
-               <TodoItems items={this.props.items} />
+               <TodoItems items={this.state.items} />
                 
             </div> 
         )
@@ -33,20 +56,36 @@ var TodoList = React.createClass({
 })
 
 var TodoInput = React.createClass({
+    
+    handleSubmit: function () {
+        
+        console.log('running the function')
+        
+        var newItemName = this.refs.itemInput.value;
+        var newItemCatagory = this.refs.catagorySelect.value;
+        
+        var newItem = {
+            catagory: newItemCatagory,
+            name: newItemName
+        };
+        
+        this.props.onUserSubmit(newItem)
+    },
+    
     render: function () {
         return (
             <div>
              <label htmlFor="item-INPUT">TODO Item:</label>
-                <input type="text" id="item-INPUT" />
+                <input ref="itemInput" type="text" id="item-INPUT" />
 
-                <label htmlFor="categorySelect">Category:</label>
-                <select name="categorySelect" id="categorySelect">
+                <label htmlFor="catagorySelect">Category:</label>
+                <select ref="catagorySelect" name="categorySelect" id="categorySelect">
                 <option value="regular">Regular</option>
                 <option value="urgent">Urgent</option>
                 <option value="longTerm">Long Term</option>
                 </select>
 
-                <button type="button" id="item-SUBMIT" className="btn btn-sm btn-default">Submit</button>
+                <button type="button" id="item-SUBMIT" onClick={this.handleSubmit} className="btn btn-sm btn-default">Submit</button>
                 </div>
         )
     }
@@ -74,11 +113,12 @@ var TodoItem = React.createClass({
         return (
             <li>
               <input type="checkbox" />
-              <span className="urgent-ITM">{this.props.item.name}</span>
+              <span className={this.props.item.catagory}>{this.props.item.name}</span>
             </li> 
         )
     }
 })
+
 
 
 ReactDOM.render(
