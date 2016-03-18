@@ -37,6 +37,8 @@
     "uglify-js": "^2.6.1"
   },
   "dependencies": {
+    "babel-preset-react": "^6.5.0",
+    "babelify": "^7.2.0",
     "bootstrap": "^3.3.6",
     "holderjs": "^2.9.1",
     "jquery": "^2.2.0",
