@@ -118,6 +118,11 @@ var ItemList = React.createClass({
       </div>
     );
   }
+	var data = [
+		{id:1, author(category?) "back burner", text:"item"}
+		{id:2, author "pickup equipment", text:"item"}
+		{id:3, author "call doodle", text:"item"}
+	]
 });
 var Item = React.createClass({
   render: function() {
