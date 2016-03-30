@@ -14,7 +14,7 @@
 
     <!-- core CSS -->
     <link href="/css/style.css" rel="stylesheet">
-
+	 <link href="js/main.js" rel="sheet">
 
 
   </head>
@@ -38,37 +38,44 @@
 
 
 
-    <div class="container" id="content" role="main">
+    <div class="todolist" id="content" role="main">
 
-      <div class="categoryList">
+      <div class="inputbox">
 
         <label for="item-INPUT">TODO Item:</label>
         <input type="text" id="item-INPUT">
-
+	  </div>
+		
+	  <div class="categoryselect">
         <label for="categorySelect">Category:</label>
         <select name="categorySelect" id="categorySelect">
-          <option value="urgent">Front Burner</option>
           <option value="urgent">Back Burner</option>
+          <option value="urgent">Front Burner</option>
           <option value="urgent">On FIRE!</option>
         </select>
-
+	   </div>
+		
+	   <div class="submit">
         <button type="button" id="item-SUBMIT" class="btn btn-sm btn-default">Submit</button>
-
+	   </div> 	  
+		  
+	   <div class="todolist" id="list">
         <ul>
           <li>
             <input type="checkbox">
-            <span class="long-term-ITM">BeeS 1</span>
+            <span class="long-term-ITM">1</span>
           </li>
           <li>
             <input type="checkbox">
-            <span class="regular-ITM">BeeS 2</span>
+            <span class="regular-ITM">2</span>
           </li>
           <li>
             <input type="checkbox">
-            <span class="urgent-ITM">BeeS 3</span>
+            <span class="urgent-ITM">3</span>
           </li>
         </ul>
-
+	   </div>
+		
       </div> <!-- /.categoryList -->
 
 

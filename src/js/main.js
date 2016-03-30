@@ -11,8 +11,8 @@ var ReactDOM = require('react-dom');
 ///      Edit below. All JS you need is included above.     ///
 ///////////////////////////////////////////////////////////////
 
-var CommentBox = React.createClass({
-  loadCommentsFromServer: function() {
+var ToDoList = React.createClass({
+  loadItemsFromServer: function() {
     $.ajax({
       url: this.props.url,
       dataType: 'json',
@@ -25,22 +25,22 @@ var CommentBox = React.createClass({
       }.bind(this)
     });
   },
-  handleCommentSubmit: function(comment) {
-    var comments = this.state.data;
+  handleItemSubmit: function(item) {
+    var items = this.state.data;
    
-    comment.id = Date.now();
-    var newComments = comments.concat([comment]);
-    this.setState({data: newComments});
+    item.id = Date.now();
+    var newItems = items.concat([item]);
+    this.setState({data: newItems});
     $.ajax({
       url: this.props.url,
       dataType: 'json',
       type: 'POST',
-      data: comment,
+      data: item,
       success: function(data) {
         this.setState({data: data});
       }.bind(this),
       error: function(xhr, status, err) {
-        this.setState({data: comments});
+        this.setState({data: items});
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
@@ -49,21 +49,21 @@ var CommentBox = React.createClass({
     return {data: []};
   },
   componentDidMount: function() {
-    this.loadCommentsFromServer();
-    setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+    this.loadItemsFromServer();
+    setInterval(this.loadItemsFromServer, this.props.pollInterval);
   },
   render: function() {
     return (
-      <div className="commentBox">
-        <h1>Comments</h1>
-        <CommentList data={this.state.data} />
-        <CommentForm onCommentSubmit={this.handleCommentSubmit} />
+      <div className="ToDoList">
+        <h1>ToDo</h1>
+        <ToDoList data={this.state.data} />
+        <InputBoxonItemSubmit={this.handleItemSubmit} />
       </div>
     );
   }
 });
 
-var CommentForm = React.createClass({
+var InputBox = React.createClass({
   getInitialState: function() {
     return {author: '', text: ''};
   },
@@ -80,21 +80,21 @@ var CommentForm = React.createClass({
     if (!text || !author) {
       return;
     }
-    this.props.onCommentSubmit({author: author, text: text});
+    this.props.onItemSubmit({author: author, text: text});
     this.setState({author: '', text: ''});
   },
   render: function() {
     return (
-      <form className="commentForm" onSubmit={this.handleSubmit}>
+      <form className="itemInput" onSubmit={this.handleSubmit}>
         <input
           type="text"
-          placeholder="Your name"
+          placeholder="Job to do"
           value={this.state.author}
           onChange={this.handleAuthorChange}
         />
         <input
           type="text"
-          placeholder="Say something..."
+          placeholder="Things tooo do!"
           value={this.state.text}
           onChange={this.handleTextChange}
         />
@@ -103,27 +103,27 @@ var CommentForm = React.createClass({
     );
   }
 });
-var CommentList = React.createClass({
+var ItemList = React.createClass({
   render: function() {
-    var commentNodes = this.props.data.map(function(comment) {
+    var itemNodes = this.props.data.map(function(item) {
       return (
-        <Comment author={comment.author} key={comment.id}>
-          {comment.text}
-        </Comment>
+        <item author={item.author} key={item.id}>
+          {item.text}
+        </Item>
       );
     });
     return (
-      <div className="commentList">
-        {commentNodes}
+      <div className="itemList">
+        {itemNodes}
       </div>
     );
   }
 });
-var Comment = React.createClass({
+var Item = React.createClass({
   render: function() {
     return (
-      <div className="comment">
-        <h2 className="commentAuthor">
+      <div className="item">
+        <h2 className="itemAuthor">
           {this.props.author}
         </h2>
         {marked(this.props.children.toString())}
@@ -131,7 +131,7 @@ var Comment = React.createClass({
     );
   }
 });
-var Comment = React.createClass({
+var Item = React.createClass({
   rawMarkup: function() {
     var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
     return { __html: rawMarkup };
@@ -139,8 +139,8 @@ var Comment = React.createClass({
 
   render: function() {
     return (
-      <div className="comment">
-        <h2 className="commentAuthor">
+      <div className="item">
+        <h2 className="itemAuthor">
           {this.props.author}
         </h2>
         <span dangerouslySetInnerHTML={this.rawMarkup()} />
