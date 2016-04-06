@@ -82,3 +82,9 @@ return (
 !
 !
 ! !] });
+var data = [
+! {id:1, author(category?) "!
+! {id:2, author "!
+! {id:3, author "!
+", text:"item"} ", text:"item"}
+", text:"item"}
