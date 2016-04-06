@@ -1,155 +1,117 @@
-var $ = require('jquery');
-var holder = require('holderjs');
-global.jQuery = global.$ = $;
-
-var bootstrap = require('bootstrap');
-
-var React = require('react');
-var ReactDOM = require('react-dom');
+//var $ = require('jquery');
+//var holder = require('holderjs');
+//global.jQuery = global.$ = $;
+//
+//var bootstrap = require('bootstrap');
+//
+//var React = require('react');
+//var ReactDOM = require('react-dom');
 
 ///////////////////////////////////////////////////////////////
 ///      Edit below. All JS you need is included above.     ///
 ///////////////////////////////////////////////////////////////
 
-var ToDoList = React.createClass({
-  loadItemsFromServer: function() {
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      cache: false,
-      success: function(data) {
-        this.setState({data: data});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-  handleItemSubmit: function(item) {
-    var items = this.state.data;
-   
-    item.id = Date.now();
-    var newItems = items.concat([item]);
-    this.setState({data: newItems});
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      type: 'POST',
-      data: item,
-      success: function(data) {
-        this.setState({data: data});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        this.setState({data: items});
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-  getInitialState: function() {
-    return {data: []};
-  },
-  componentDidMount: function() {
-    this.loadItemsFromServer();
-    setInterval(this.loadItemsFromServer, this.props.pollInterval);
-  },
+var ProductCategoryRow = React.createClass({
   render: function() {
+    return (<tr><th colSpan="2">{this.props.category}</th></tr>);
+  }
+});
+
+var ProductRow = React.createClass({
+  render: function() {
+    var name = this.props.product.stocked ?
+      this.props.product.name :
+      <span style={{color: 'red'}}>
+        {this.props.product.name}
+      </span>;
     return (
-      <div className="ToDoList">
-        <h1>ToDo</h1>
-        <ToDoList data={this.state.data} />
-        <InputBoxonItemSubmit={this.handleItemSubmit} />
-      </div>
+      <tr>
+        <td>{name}</td>
+        <td>{this.props.product.price}</td>
+      </tr>
     );
   }
 });
 
-var InputBox = React.createClass({
-  getInitialState: function() {
-    return {author: '', text: ''};
-  },
-  handleAuthorChange: function(e) {
-    this.setState({author: e.target.value});
-  },
-  handleTextChange: function(e) {
-    this.setState({text: e.target.value});
-  },
-  handleSubmit: function(e) {
-    e.preventDefault();
-    var author = this.state.author.trim();
-    var text = this.state.text.trim();
-    if (!text || !author) {
-      return;
-    }
-    this.props.onItemSubmit({author: author, text: text});
-    this.setState({author: '', text: ''});
-  },
+var ProductTable = React.createClass({
+  render: function() {
+    var rows = [];
+    var lastCategory = null;
+    this.props.products.forEach(function(product) {
+      if (product.name.indexOf(this.props.filterText) === -1 || (!product.stocked && this.props.inStockOnly)) {
+        return;
+      }
+      if (product.category !== lastCategory) {
+        rows.push(<ProductCategoryRow category={product.category} key={product.category} />);
+      }
+      rows.push(<ProductRow product={product} key={product.name} />);
+      lastCategory = product.category;
+    }.bind(this));
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>{rows}</tbody>
+      </table>
+    );
+  }
+});
+
+var SearchBar = React.createClass({
   render: function() {
     return (
-      <form className="itemInput" onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          placeholder="Job to do"
-          value={this.state.author}
-          onChange={this.handleAuthorChange}
-        />
-        <input
-          type="text"
-          placeholder="Things tooo do!"
-          value={this.state.text}
-          onChange={this.handleTextChange}
-        />
-        <input type="submit" value="Post" />
+      <form>
+        <input type="text" placeholder="Search..." value={this.props.filterText} />
+        <p>
+          <input type="checkbox" checked={this.props.inStockOnly} />
+          {' '}
+          Only show products in stock
+        </p>
       </form>
     );
   }
 });
-var ItemList = React.createClass({
-  render: function() {
-    var itemNodes = this.props.data.map(function(item) {
-      return (
-        <item author={item.author} key={item.id}>
-          {item.text}
-        </Item>
-      );
-    });
-    return (
-      <div className="itemList">
-        {itemNodes}
-      </div>
-    );
-  }
-	var data = [
-		{id:1, author(category?) "back burner", text:"item"}
-		{id:2, author "pickup equipment", text:"item"}
-		{id:3, author "call doodle", text:"item"}
-	]
-});
-var Item = React.createClass({
-  render: function() {
-    return (
-      <div className="item">
-        <h2 className="itemAuthor">
-          {this.props.author}
-        </h2>
-        {marked(this.props.children.toString())}
-      </div>
-    );
-  }
-});
-var Item = React.createClass({
-  rawMarkup: function() {
-    var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
-    return { __html: rawMarkup };
+
+var FilterableProductTable = React.createClass({
+  getInitialState: function() {
+    return {
+      filterText: '',
+      inStockOnly: false
+    };
   },
 
   render: function() {
     return (
-      <div className="item">
-        <h2 className="itemAuthor">
-          {this.props.author}
-        </h2>
-        <span dangerouslySetInnerHTML={this.rawMarkup()} />
+      <div>
+        <SearchBar
+          filterText={this.state.filterText}
+          inStockOnly={this.state.inStockOnly}
+        />
+        <ProductTable
+          products={this.props.products}
+          filterText={this.state.filterText}
+          inStockOnly={this.state.inStockOnly}
+        />
       </div>
     );
   }
 });
+
+
+var PRODUCTS = [
+  {category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football'},
+  {category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball'},
+  {category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball'},
+  {category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch'},
+  {category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 5'},
+  {category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7'}
+];
+
+ReactDOM.render(
+  <FilterableProductTable products={PRODUCTS} />,
+  document.getElementById('container')
+);
