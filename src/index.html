@@ -1,3 +1,9 @@
+<!--<script src="js/main.js" ></script>-->
+
+
+<!--<div id="container">-->
+    <!-- This element's contents will be replaced with your component. -->
+<!--</div>-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +20,7 @@
 
     <!-- core CSS -->
     <link href="/css/style.css" rel="stylesheet">
-
+	 <link href="js/main.js" rel="sheet">
 
 
   </head>
@@ -38,44 +44,52 @@
 
 
 
-    <div class="container" id="content" role="main">
+    <div class="todolist" id="content" role="main">
 
-      <div class="categoryList">
+      <div class="inputbox">
 
         <label for="item-INPUT">TODO Item:</label>
         <input type="text" id="item-INPUT">
-
+	  </div>	<!--/inputbox-->
+		
+	  <div class="categoryselect">
         <label for="categorySelect">Category:</label>
         <select name="categorySelect" id="categorySelect">
-          <option value="urgent">Regular</option>
-          <option value="urgent">Urgent</option>
-          <option value="urgent">Long Term</option>
+          <option value="long-term-ITM">Back Burner</option>
+          <option value="regular-ITM">Front Burner</option>
+          <option value="urgent-ITM">On FIRE!</option>
         </select>
-
+	   </div>	<!--/categoryselect-->
+		
+	   <div class="submit">
         <button type="button" id="item-SUBMIT" class="btn btn-sm btn-default">Submit</button>
-
+	   </div> 	 <!--/submit--> 
+		  
+	   <div class="itemlist" id="list">
         <ul>
           <li>
             <input type="checkbox">
-            <span class="long-term-ITM">Item 1</span>
+            <span class="long-term-ITM">1</span>
           </li>
           <li>
             <input type="checkbox">
-            <span class="regular-ITM">Item 1</span>
+            <span class="regular-ITM">2</span>
           </li>
           <li>
             <input type="checkbox">
-            <span class="urgent-ITM">Item 1</span>
+            <span class="urgent-ITM">3</span>
           </li>
         </ul>
-
-      </div> <!-- /.categoryList -->
+	   </div>   <!--/itemlist-->
+		
+      </div> <!-- /.category/todoList -->
 
 
 
 
 
     </div> <!-- /container -->
+
 
 
     <!-- Bootstrap core JavaScript
