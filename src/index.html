@@ -20,52 +20,54 @@
 
     <!-- core CSS -->
     <link href="/css/style.css" rel="stylesheet">
-	 <link href="js/main.js" rel="sheet">
+	  <script src="build/react.js"></script>
+	  <script src="build/react-dom.js"></script>
+	  <script scr="js/main.js"></script>
 
 
   </head>
 
   <body role="document">
 
-    <!-- Fixed navbar -->
+    <!-- Fixed navbar -->	<!--<div id="container">-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
+      <div class="container" id="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+         <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </button>
+          </button>-->
           <a class="navbar-brand" href="#">React Assignment</a>
         </div>
       </div>
-    </nav>
+    </nav> 
 
-
-
+	  			
+	
+	  				<!--/inputbox-->
     <div class="todolist" id="content" role="main">
-
-      <div class="inputbox">
 
         <label for="item-INPUT">TODO Item:</label>
         <input type="text" id="item-INPUT">
-	  </div>	<!--/inputbox-->
-		
+	  </div>	
+	  
+					<!--/categoryselect-->
 	  <div class="categoryselect">
         <label for="categorySelect">Category:</label>
         <select name="categorySelect" id="categorySelect">
-          <option value="long-term-ITM">Back Burner</option>
-          <option value="regular-ITM">Front Burner</option>
-          <option value="urgent-ITM">On FIRE!</option>
+          <option value="long-term-ITM">Long Term</option>
+          <option value="regular-ITM">Regular</option>
+          <option value="urgent-ITM">Urgent</option>
         </select>
-	   </div>	<!--/categoryselect-->
+	   </div>	
 		
-	   <div class="submit">
+	  
+	  				<!-- /.category/todoList -->
         <button type="button" id="item-SUBMIT" class="btn btn-sm btn-default">Submit</button>
-	   </div> 	 <!--/submit--> 
-		  
-	   <div class="itemlist" id="list">
+	    
+	   
         <ul>
           <li>
             <input type="checkbox">
@@ -80,16 +82,13 @@
             <span class="urgent-ITM">3</span>
           </li>
         </ul>
-	   </div>   <!--/itemlist-->
+	   
 		
-      </div> <!-- /.category/todoList -->
+      
+<!--</div container?>-->
+	  
 
-
-
-
-
-    </div> <!-- /container -->
-
+   
 
 
     <!-- Bootstrap core JavaScript

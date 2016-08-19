@@ -11,125 +11,85 @@ var ReactDOM = require('react-dom');
 ///////////////////////////////////////////////////////////////
 ///      Edit below. All JS you need is included above.     ///
 ///////////////////////////////////////////////////////////////
-
-var ProductCategoryRow = React.createClass({
-  render: function() {
-    return (<tr><th colSpan="2">{this.props.category}</th></tr>);
-  }
+var ItemRow = React.createClass ( {
+	render: function (){
+		var name = this.props.item.text
+		 this.rops.item.text:
+		 <span style = {{color:'purple'}}
+	{this.props.item.text}
+	/span>;
+	return(
+	  <tr
+	    <td {this.props.item.text}/td>
+	  /tr>
+     );
+	} 
 });
 
-var ProductRow = React.createClass({
-  render: function() {
-    var name = this.props.product.stocked ?
-      this.props.product.name :
-      <span style={{color: 'red'}}>
-        {this.props.product.name}
-      </span>;
-    return (
-      <tr>
-        <td>{name}</td>
-        <td>{this.props.product.price}</td>
-      </tr>
-    );
-  }
+var ItemTable = React.createClass ({
+	render: function(){
+		var rows = [];
+		var lastCategory = null;
+		this.props.items.forEach(function(item){
+			if(item.category ! == lastCategory){
+				rowspush(<ItemRow item={item} key{item.name}/>);
+						 lastCategory=item.category;
+		});
+	return(
+	  <table>
+		<tbody>{rows}</tbody>
+	  </table>
+	);
+	}
 });
-
-var ProductTable = React.createClass({
-  render: function() {
-    var rows = [];
-    var lastCategory = null;
-    this.props.products.forEach(function(product) {
-      if (product.name.indexOf(this.props.filterText) === -1 || (!product.stocked && this.props.inStockOnly)) {
-        return;
-      }
-      if (product.category !== lastCategory) {
-        rows.push(<ProductCategoryRow category={product.category} key={product.category} />);
-      }
-      rows.push(<ProductRow product={product} key={product.name} />);
-      lastCategory = product.category;
-    }.bind(this));
-    return (
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </table>
-    );
-  }
+		
+var item-INPUT = React.createClass({ 
+	render:function(){
+	  return(<form>
+			<p> {''} ToDo Item: </p>
+			<input type = "text" placeholder = "Job Item" />
+			<p>{''} Category: </p>
+			 <input type = "select" >{this.state.options} />
+			 <input type = "button" {this.state.submit} />
+			 </form>
+			);
+	}
 });
-
-var SearchBar = React.createClass({
-  handleChange: function() {
-    this.props.onUserInput(
-      this.refs.filterTextInput.value,
-      this.refs.inStockOnlyInput.checked
-    );
-  },
-  render: function() {
-    return (
-      <form>
-        <input
-          type="text"
-          placeholder="Search..."
-          value={this.props.filterText}
-          ref="filterTextInput"
-          onChange={this.handleChange}
-        />
-        <p>
-          <input
-            type="checkbox"
-            checked={this.props.inStockOnly}
-            ref="inStockOnlyInput"
-            onChange={this.handleChange}
-          />
-          {' '}
-          Only show products in stock
-        </p>
-      </form>
-    );
-  }
+		
+var categorySelect = React.createClass({
+	render:function(){
+	  return(
+	  
+	  )}
 });
-
-var FilterableProductTable = React.createClass({
-  getInitialState: function() {
-    return {
-      filterText: '',
-      inStockOnly: false
-    };
-  },
-
-  handleUserInput: function(filterText, inStockOnly) {
-    this.setState({
-      filterText: filterText,
-      inStockOnly: inStockOnly
-    });
-  },
-
-  render: function() {
-    return (
-      <div>
-        <SearchBar
-          filterText={this.state.filterText}
-          inStockOnly={this.state.inStockOnly}
-          onUserInput={this.handleUserInput}
-        />
-        <ProductTable
-          products={this.props.products}
-          filterText={this.state.filterText}
-          inStockOnly={this.state.inStockOnly}
-        />
-      </div>
-    );
-  }
+	 
+var item-Submit = React.createClass({
+	render:function(){
+		return
+	}
 });
-
-
+		
+var FilterableItemTable = React.createClass({
+	render:function(){
+		return(
+		 <div>
+			<InputTable />
+			<ItemTable items={this.props.items} />
+		</div>	
+		
+		);
+	}
+});
+}
+});
+		
+var ITEMS = [
+	{category:'urgent-ITM', item:'text', value:'1'},
+	{category:'regular-ITM', item:'text', value:'2'},
+	{category:'long-term-ITM', item:'text', value:'3'}
+]
 
 ReactDOM.render(
-  <FilterableProductTable products={PRODUCTS} />,
-  document.getElementById('container')
+  <FilterableItemTable items = {ITEMS}/>
+	document.getElementById('container')
 );
